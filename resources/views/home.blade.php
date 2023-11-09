@@ -8,10 +8,14 @@
 
     <style>
         body {
-            background-image: url('image/b.jpeg'); /* Ganti dengan path gambar yang sesuai */
-            background-size: cover; /* Untuk mengisi seluruh area latar belakang */
-            background-repeat: no-repeat; /* Agar gambar tidak diulang-ulang */
-            background-attachment: fixed; /* Untuk menjaga gambar tetap di tempatnya saat menggulir halaman */
+            background-image: url('image/b.jpeg');
+            /* Ganti dengan path gambar yang sesuai */
+            background-size: cover;
+            /* Untuk mengisi seluruh area latar belakang */
+            background-repeat: no-repeat;
+            /* Agar gambar tidak diulang-ulang */
+            background-attachment: fixed;
+            /* Untuk menjaga gambar tetap di tempatnya saat menggulir halaman */
         }
     </style>
 
@@ -21,11 +25,9 @@
 </head>
 
 <body>
-    
-    <nav class="navbar navbar-dark bg-primary">
-    
-    <img src="{{ ('image/logo.png') }}" width="100" style="border-radius: 50%; margin-left: 10px;" />
 
+    <nav class="navbar navbar-dark bg-primary">
+        <img src="{{ 'image/logo.png' }}" width="100" style="border-radius: 50%; margin-left: 10px;" />
         <div class="container">
             <a class="navbar-brand" href="/">
                 Politeknik Negeri Bengkalis | D-IV Rekayasa Perangkat Lunak</a>
@@ -45,12 +47,12 @@
                     jika anda belum punya akun
                 </h6>
 
-        
+
                 <!-- Tambahkan tautan menu atau tombol untuk halaman baru di sini -->
-                <a href="{{ route('berita') }}" class="btn btn-primary mt-3">Berita RPL</a>
-                <a href="{{ route('profile') }}" class="btn btn-primary mt-3">Profil Lulusan RPL</a>
-                <a href="{{ route('aktivitas') }}" class="btn btn-primary mt-3">Aktivitas Mahasiswa RPL</a>
+               
                 <!-- Tambahkan tautan menu atau tombol untuk halaman Biodata di sini -->
+                <a href="{{ route('biodata') }}" class="btn btn-primary mt-3">Biodata</a>
+                
             </div>
         </div>
     </div>

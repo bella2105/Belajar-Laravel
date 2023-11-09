@@ -51,7 +51,7 @@
                             </div><br>
                             <div class="form-group mt-1">
                                 <label class="text-secondary mb-2">Judul Buku</label>
-                                <input type="text" class="form-controlborder border-secondary form-control"
+                                <input type="text" class="form-controlborder border-secondary form-control"autocomplete="off"
                                     name="judulBuku" required value="{{ old('judulBuku') }}">
                                 <span class="text-danger">
                                     @error('judulBuku')
@@ -62,7 +62,7 @@
                             <div class="form-group mt-1">
                                 <label class="text-secondary mb-2">Penulis</label>
                                 <input type="text" class="form-controlborder border-secondary form-control"
-                                    name="penulis" required value="{{ old('penulis') }}">
+                                    name="penulis" autocomplete="off" required value="{{ old('penulis') }}">
                                 <span class="text-danger">
                                     @error('penulis')
                                         {{ $message }}
@@ -72,7 +72,7 @@
                             <div class="form-group mt-1">
                                 <label class="text-secondary mb-2">Penerbit</label>
                                 <input type="text" class="form-controlborder border-secondary form-control"
-                                    name="penerbit" required value="{{ old('penerbit') }}">
+                                    name="penerbit"autocomplete="off" required value="{{ old('penerbit') }}">
                                 <span class="text-danger">
                                     @error('penerbit')
                                         {{ $message }}

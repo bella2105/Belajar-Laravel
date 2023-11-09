@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aktivitas;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Buku;
+use App\Models\Berita;
+use App\Models\Lulusan;
 use Illuminate\Http\Request;
 
 
@@ -21,13 +24,16 @@ class LoginRegisterController extends Controller
         return view('biodata');
     }
     public function berita(){
-        return view('auth.berita');
+        $berita_item = Berita::all();
+        return view('user.berita', compact('berita_item'));
     }
     public function profile(){
-        return view('auth.profile');
+        $lulusan_item = Lulusan::all();
+        return view('user.profile', compact('lulusan_item'));
     }
     public function aktivitas(){
-        return view('auth.aktivitas');
+        $aktivitas_item = Aktivitas::all();
+        return view('user.aktivitas', compact('aktivitas_item'));
         
     }
     public function userHome(Request $request){
@@ -93,7 +99,6 @@ class LoginRegisterController extends Controller
         })
         ->paginate(5);
         
-
     return view('admin.home', compact('data'));
 }
 

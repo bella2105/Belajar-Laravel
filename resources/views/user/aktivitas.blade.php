@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Profil Lulusan Jurusan RPL</title>
+    <title>Aktivitas Mahasiswa Jurusan Teknik Informatika</title>
 </head>
 
 <body>
@@ -19,18 +19,17 @@
                         <a class="nav-link" href="{{ route('user.home') }}">Home</a>
                     </li>
                     <li class="nav-item ml-auto">
-                        <a class="nav-link" href="{{ route('berita') }}">Berita</a>
+                        <a class="nav-link" href="{{ route('user.berita') }}">Berita</a>
                     </li>
                     <li class="nav-item ml-auto">
                         <a class="nav-link" href="{{ route('profile') }}">Profile</a>
                     </li>
                     <li class="nav-item ml-auto">
                         <a class="nav-link" href="{{ route('aktivitas') }}">Aktivitas</a>
-                    </li>
                     <li class="nav-item ml-auto">
                         <a class="nav-link" href="{{ route('logout') }}">Logout</a>
                     </li>
-
+                    </li>
                 </ul>
             </div>
         </div>
@@ -38,37 +37,27 @@
 
     <!-- Content -->
     <div class="container mt-4">
-        <h1 class="text-center">Profil Lulusan Jurusan RPL</h1>
+        <h1 class="text-center">Aktivitas Mahasiswa  Politeknik Negeri Bengkalis</h1>
         <hr>
 
-        <!-- Profil Lulusan -->
+        <!-- Aktivitas Mahasiswa -->
         <div class="row">
-            <!-- Profil Lulusan 1 -->
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <img src="/image/cowo.webp" class="card-img-top" alt="Foto Lulusan 1">
-                    <div class="card-body">
-                        <h5 class="card-title">Kelvin</h5>
-                        <p class="card-text">Lulusan tahun 2025 dengan ipk 3.90</p>
-                        <a href="#" class="btn btn-primary">Selengkapnya</a>
+            <!-- Loop through each news item -->
+            @foreach ($aktivitas_item as $aktivitas)
+                <div class="col-md-12">
+                    <div class="card mb-4">
+                        <div style="height: 50vh; overflow: hidden;">
+                            <img src="{{ asset('/images/' . $aktivitas->gambar) }}" class="card-img-top"
+                                style="height: 100%; width: auto; object-fit: cover;" alt="{{ $aktivitas->gambar }}">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $aktivitas->judul_aktivitas }}</h5>
+                            <p class="card-text">{{ $aktivitas->isi_aktivitas }}</p>
+                            <a href="#" class="btn btn-primary">Baca Selengkapnya</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Profil Lulusan 2 -->
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <img src="/image/cewe.webp" class="card-img-top" alt="Foto Lulusan 2">
-                    <div class="card-body">
-                        <h5 class="card-title">Bella</h5>
-                        <p class="card-text">Deskripsi singkat profil lulusan 2.</p>
-                        <a href="#" class="btn btn-primary">Selengkapnya</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tambahkan Profil Lulusan Lainnya di sini -->
-
+            @endforeach
         </div>
     </div>
 

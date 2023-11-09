@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
              $table->string('gambar');
              $table->string('kode_buku')->unique();
-             $table->string('judul_buku');
+             $table->longText('judul_buku');
              $table->string('penulis');
              $table->string('penerbit');
              $table->string('kategori');

@@ -40,18 +40,33 @@
                             @csrf
                             <div class="form-group mt-4">
                                 <label class="text-secondary mb-2">Nomor Anggota</label>
-                                <input type="text" class="form-control border border-secondary form-control"
-                                    name="idUser" required value="{{ old('idUser') }}">
+                                <select class="form-control border border-secondary form-control" name="idUser"
+                                    required>
+                                    <option value="">Pilih ID Pengguna</option>
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->id }}"
+                                            {{ old('idUser') == $user->id ? 'selected' : '' }}>{{ $user->id }}
+                                        </option>
+                                    @endforeach
+                                </select>
                                 <span class="text-danger">
                                     @error('idUser')
                                         {{ $message }}
                                     @enderror
                                 </span>
-                            </div><br>
-                            <div class="form-group mt-1">
-                                <label class="text-secondary mb-2">ID Buku</label>
-                                <input type="text" class="form-control border border-secondary form-control"
-                                    name="kodeBuku" required value="{{ old('kodeBuku') }}">
+                            </div>
+                            <br>
+                            <div class="form-group mt-4">
+                                <label class="text-secondary mb-2">Kode Buku</label>
+                                <select class="form-control border border-secondary form-control" name="kodeBuku"
+                                    required>
+                                    <option value="">Pilih Kode Buku</option>
+                                    @foreach ($buku_item as $buku)
+                                        <option value="{{ $buku->id }}"
+                                            {{ old('kodeBuku') == $buku->id ? 'selected' : '' }}>{{ $buku->id }}
+                                        </option>
+                                    @endforeach
+                                </select>
                                 <span class="text-danger">
                                     @error('kodeBuku')
                                         {{ $message }}

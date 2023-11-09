@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('tahun_lulus');
             $table->string('pekerjaan_sekarang');
             $table->string('pendidikan_lanjutan');
+            $table->string('gambar');
             $table->timestamps();
         });
     }

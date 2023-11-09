@@ -13,11 +13,12 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <a class="navbar-brand" href="#"></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto" >
+                <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="/"></a>
                     </li>
@@ -35,11 +36,11 @@
             </div>
         </nav>
     </header>
-    <section id="home   " class="text-center py-5">
-        <img src="{{ ('image/foto.jpg')}}" width="150" alt="Your name" class="rounded-circle">
+    <section id="home" class="text-center py-5">
+        <img src="{{ 'image/foto.jpg' }}" width="150" alt="Your name" class="rounded-circle">
         <h1>Bella Kurnia Amellia</h1>
         <p>Mahasiswa</p>
-        <p>Hi, saya Bella kurnia Amellia, saya adalah Mahasiswa Politeknik Negeri Bengkalis. 
+        <p>Hi, saya Bella kurnia Amellia, saya adalah Mahasiswa Politeknik Negeri Bengkalis.
             Prodi D4 RPL Jurusan Teknik informatika Saat ini sedang belajar Laravel di Lab Software Testing.
         </p>
     </section>

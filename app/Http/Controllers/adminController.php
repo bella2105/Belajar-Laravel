@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\Hash;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Charts\ChartPeminjaman;
 use Illuminate\Support\Facades\DB;
-use App\Models\berita;
-use App\Models\lulusan;
+use App\Models\Berita;
+use App\Models\Lulusan;
+use App\Models\Aktivitas;
 
 class adminController extends Controller
 {
@@ -53,7 +54,6 @@ class adminController extends Controller
             return back()->with('failed', 'Gagal menambah admin baru!');
         }
     }
-
 
     public function editAdmin($id)
     {
@@ -102,6 +102,7 @@ update!');
     }
     public function tambahBuku()
     {
+        
         return view('admin.tambahBuku');
     }
     public function postTambahBuku(Request $request)
@@ -215,7 +216,9 @@ hapus!');
     }
     public function tambahPeminjaman()
     {
-        return view('admin.tambahPeminjaman');
+        $users = User::all();
+        $buku_item = Buku::all();
+        return view('admin.tambahPeminjaman', compact('users', 'buku_item'));
     }
     public function postTambahPeminjaman(Request $request)
     {
@@ -304,12 +307,24 @@ peminjaman!');
             ->join('buku', 'buku.id', '=', 'peminjaman.id_buku')
             ->select('peminjaman.*', 'users.name', 'buku.judul_buku')
             ->get();
-        $pdf = PDF::loadView('admin.cetakPeminjaman', ['data' => $data])->setPaper('a4', 'landscape');
+        $pdf = PDF::loadView('admin.cetakPeminjaman', ['data' => $data]);
         return $pdf->stream();
     }
 
     // Function untuk menambahkan berita baru
-    public function postBerita(Request $request)
+    public function adminBerita(Request $request)
+    {
+        $search = $request->input('search');
+        $data = Berita::where(function ($query) use ($search) {
+            $query->where('judul_berita', 'LIKE', '%' . $search . '%');
+        })->paginate(5);
+        return view('admin.berita', compact('data'));
+    }
+    public function tambahBerita()
+    {
+        return view('admin.tambahBerita');
+    }
+    public function postTambahBerita(Request $request)
     {
         $request->validate([
             'judul_berita' => 'required',
@@ -343,8 +358,80 @@ peminjaman!');
         }
     }
 
+    public function editBerita($id)
+    {
+        $data = Berita::find($id);
+        return view('admin.editBerita', compact('data'));
+    }
+
+    public function postEditBerita(Request $request, $id)
+    {
+        $request->validate([
+            'judul_berita' => 'required',
+            'tanggal' => 'required',
+            'penulis' => 'required',
+            'gambar' => 'image|max:5120',   
+            'isi_berita' => 'required'
+        ]);
+
+        $berita = Berita::find($id);
+
+        $berita->judul_berita = $request->judul_berita;
+        $berita->tanggal = $request->tanggal;
+        $berita->penulis = $request->penulis;
+        $berita->isi_berita = $request->isi_berita;
+
+        if ($request->hasFile('gambar')) {
+            $filepath = 'images/' . $berita->gambar;
+            if (File::exists($filepath)) {
+                File::delete($filepath);
+            }
+            $file = $request->file('gambar');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $file->move('images/', $filename);
+            $berita->gambar = $filename;
+        }
+
+        $berita->save();
+
+        if ($berita) {
+            return back()->with('success', 'Berita berhasil diupdate!');
+        } else {
+            return back()->with('failed', 'Berita gagal diupdate!');
+        }
+    }
+
+    public function deleteBerita($id)
+    {
+        $berita = Berita::find($id);
+        $filepath = 'images/' . $berita->gambar;
+        if (File::exists($filepath)) {
+            File::delete($filepath);
+        }
+        $berita->delete();
+        if ($berita) {
+            return back()->with('success', 'Data berita berhasil di
+hapus!');
+        } else {
+            return back()->with('failed', 'Gagal menghapus data berita!');
+        }
+    }
+
     // Function untuk menambahkan lulusan baru
-    public function postLulusan(Request $request)
+    public function adminLulusan(Request $request)
+    {
+        $search = $request->input('search');
+        $data = Lulusan::where(function ($query) use ($search) {
+            $query->where('nama', 'LIKE', '%' . $search . '%');
+        })->paginate(5);
+        return view('admin.lulusan', compact('data'));
+    }
+    public function tambahLulusan()
+    {
+        return view('admin.tambahLulusan');
+    }
+    public function postTambahLulusan(Request $request)
     {
         $request->validate([
             'nama' => 'required',
@@ -363,13 +450,186 @@ peminjaman!');
         $data->tahun_lulus = $request->tahun_lulus;
         $data->pekerjaan_sekarang = $request->pekerjaan_sekarang;
         $data->pendidikan_lanjutan = $request->pendidikan_lanjutan;
-
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $file->move('images/', $filename);
+            $data->gambar = $filename;
+        }
         $data->save();
 
         if ($data) {
             return back()->with('success', 'Data lulusan baru, berhasil ditambahkan!');
         } else {
             return back()->with('failed', 'Data lulusan baru, gagal ditambahkan!');
+        }
+    }
+
+    public function editLulusan($id)
+    {
+        $data = Lulusan::find($id);
+        return view('admin.editLulusan', compact('data'));
+    }
+
+    public function postEditLulusan(Request $request, $id)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'nim' => 'required',
+            'prodi' => 'required',
+            'tahunLulus' => 'required',
+            'pekerjaanSekarang' => 'required',
+            'pendidikanLanjutan' => 'required',
+            'gambar' => 'image|max:5120',
+        ]);
+
+        $lulusan = Lulusan::find($id);
+
+        $lulusan->nama = $request->nama;
+        $lulusan->nim = $request->nim;
+        $lulusan->prodi = $request->prodi;
+        $lulusan->tahun_lulus = $request->tahunLulus;
+        $lulusan->pekerjaan_sekarang = $request->pekerjaanSekarang;
+        $lulusan->pendidikan_lanjutan = $request->pendidikanLanjutan;
+        if ($request->hasFile('gambar')) {
+            $filepath = 'images/' . $lulusan->gambar;
+            if (File::exists($filepath)) {
+                File::delete($filepath);
+            }
+            $file = $request->file('gambar');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $file->move('images/', $filename);
+            $lulusan->gambar = $filename;
+        }
+        $lulusan->save();
+
+        if ($lulusan) {
+            return back()->with('success', 'Lulusan berhasil diupdate!');
+        } else {
+            return back()->with('failed', 'Lulusan gagal diupdate!');
+        }
+    }
+    public function deleteLulusan($id)
+    {
+        $lulusan = Lulusan::find($id);
+        $filepath = 'images/' . $lulusan->gambar;
+        if (File::exists($filepath)) {
+            File::delete($filepath);
+        }
+        $lulusan->delete();
+        if ($lulusan) {
+            return back()->with('success', 'Data lulusan berhasil di
+hapus!');
+        } else {
+            return back()->with('failed', 'Gagal menghapus data lulusan!');
+        }
+    }
+
+    public function adminAktivitas(Request $request)
+    {
+        $search = $request->input('search');
+        $data = Aktivitas::where(function ($query) use ($search) {
+            $query->where('judul_aktivitas', 'LIKE', '%' . $search . '%');
+        })->paginate(5);
+        return view('admin.aktivitas', compact('data'));
+    }
+    public function tambahAktivitas()
+    {
+        return view('admin.tambahAktivitas');
+    }
+    public function postTambahAktivitas(Request $request)
+    {
+        $request->validate([
+            'judul_aktivitas' => 'required',
+            'tanggal' => 'required',
+            'penulis' => 'required',
+            'gambar' => 'image|max:5120',
+            'isi_aktivitas' => 'required'
+        ]);
+
+        $data = new Aktivitas;
+
+        $data->judul_aktivitas = $request->judul_aktivitas;
+        $data->tanggal = $request->tanggal;
+        $data->penulis = $request->penulis;
+        $data->isi_aktivitas = $request->isi_aktivitas;
+
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $file->move('images/', $filename);
+            $data->gambar = $filename;
+        }
+
+        $data->save();
+
+        if ($data) {
+            return back()->with('success', 'Aktivitas baru, berhasil ditambahkan!');
+        } else {
+            return back()->with('failed', 'Aktivitas baru, gagal ditambahkan!');
+        }
+    }
+
+    public function editAktivitas($id)
+    {
+        $data = Aktivitas::find($id);
+        return view('admin.editAktivitas', compact('data'));
+    }
+
+    public function postEditAktivitas(Request $request, $id)
+    {
+        $request->validate([
+            'judul_aktivitas' => 'required',
+            'tanggal' => 'required',
+            'penulis' => 'required',
+            'gambar' => 'image|max:5120',   
+            'isi_aktivitas' => 'required'
+        ]);
+
+        $aktivitas = Aktivitas::find($id);
+
+        $aktivitas->judul_aktivitas = $request->judul_aktivitas;
+        $aktivitas->tanggal = $request->tanggal;
+        $aktivitas->penulis = $request->penulis;
+        $aktivitas->isi_aktivitas = $request->isi_aktivitas;
+
+        if ($request->hasFile('gambar')) {
+            $filepath = 'images/' . $aktivitas->gambar;
+            if (File::exists($filepath)) {
+                File::delete($filepath);
+            }
+            $file = $request->file('gambar');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $file->move('images/', $filename);
+            $aktivitas->gambar = $filename;
+        }
+
+        $aktivitas->save();
+
+        if ($aktivitas) {
+            return back()->with('success', 'Aktivitas berhasil diupdate!');
+        } else {
+            return back()->with('failed', 'Aktivitas gagal diupdate!');
+        }
+    }
+
+    public function deleteAktivitas($id)
+    {
+        $aktivitas = Aktivitas::find($id);
+        $filepath = 'images/' . $aktivitas->gambar;
+        if (File::exists($filepath)) {
+            File::delete($filepath);
+        }
+        $aktivitas->delete();
+        if ($aktivitas) {
+            return back()->with('success', 'Data aktivitas berhasil di
+hapus!');
+        } else {
+            return back()->with('failed', 'Gagal menghapus data aktivitas!');
         }
     }
 }

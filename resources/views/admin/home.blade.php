@@ -30,28 +30,33 @@
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <h5>
-                                <a class="nav-link active" aria-current="page" href="{{ route('admin.home') }}">Home</a>
+                                <a class="nav-link active" href="{{ route('admin.home') }}">Home</a>
                             </h5>
                         </li>
                         <li class="nav-item" style="margin-left: 30px">
                             <h5>
-                                <a class="nav-link" aria-current="page" href="{{ route('admin.buku') }}">Buku</a>
+                                <a class="nav-link" href="{{ route('admin.buku') }}">Buku</a>
                             </h5>
                         </li>
                         <li class="nav-item" style="margin-left: 30px">
                             <h5>
-                                <a class="nav-link" aria-current="page"
+                                <a class="nav-link"
                                     href="{{ route('admin.peminjaman') }}">Peminjaman</a>
                             </h5>
                         </li>
                         <li class="nav-item" style="margin-left: 30px">
                             <h5>
-                                <a class="nav-link" aria-current="page" href="{{ route('admin.berita') }}">Tambah Berita</a>
+                                <a class="nav-link" href="{{ route('admin.berita') }}">Berita</a>
                             </h5>
                         </li>
                         <li class="nav-item" style="margin-left: 30px">
                             <h5>
-                                <a class="nav-link" aria-current="page" href="{{ route('admin.lulusan') }}">Tambah Lulusan</a>
+                                <a class="nav-link" href="{{ route('admin.lulusan') }}">Lulusan</a>
+                            </h5>
+                        </li>
+                        <li class="nav-item" style="margin-left: 30px">
+                            <h5>
+                                <a class="nav-link" href="{{ route('admin.aktivitas') }}">Aktivitas</a>
                             </h5>
                         </li>
                     </ul>

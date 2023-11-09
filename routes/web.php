@@ -37,35 +37,61 @@ Route::middleware(['guest'])->group(function () {
 });
 
 Route::group(['middleware' => ['auth', 'checklevel:admin']], function () {
+    // Admin
     Route::get('/admin/home', [LoginRegisterController::class, 'adminHome'])->name('admin.home');
     Route::get('/admin/tambah', [AdminController::class, 'tambah'])->name('admin.tambah');
     Route::get('/editAdmin/{id}', [AdminController::class, 'editAdmin'])->name('editAdmin');
     Route::get('/deleteAdmin/{id}', [AdminController::class, 'deleteAdmin'])->name('deleteAdmin');
+    Route::post('/tambahAdmin', [AdminController::class, 'postTambahAdmin'])->name('postTambahAdmin');
+    Route::post('/postEditAdmin/{id}', [AdminController::class, 'postEditAdmin'])->name('postEditAdmin');
+
+    // Peminjaman
     Route::get('/admin/peminjaman', [AdminController::class, 'adminPeminjaman'])->name('admin.peminjaman');
     Route::get('/admin/tambahPeminjaman', [AdminController::class, 'tambahPeminjaman'])->name('admin.tambahPeminjaman');
     Route::get('/admin/editPeminjaman/{id}', [AdminController::class, 'editPeminjaman'])->name('admin.editPeminjaman');
     Route::get('/admin/deletePeminjaman/{id}', [AdminController::class, 'deletePeminjaman'])->name('admin.deletePeminjaman');
     Route::get('/admin/detailPeminjaman/{id_peminjaman}/{id_user}/{id_buku}', [AdminController::class, 'detailPeminjaman'])->name('admin.detailPeminjaman');
+    Route::get('/admin/cetakPeminjaman', [AdminController::class, 'cetakDataPeminjaman'])->name('admin.cetakDataPeminjaman');
+
+    // Buku
     Route::get('/admin/buku', [AdminController::class, 'adminBuku'])->name('admin.buku');
     Route::get('/admin/tambahBuku', [AdminController::class, 'tambahBuku'])->name('admin.tambahBuku');
     Route::get('/admin/editBuku/{id}', [AdminController::class, 'editBuku'])->name('admin.editBuku');
     Route::get('/admin/deleteBuku/{id}', [AdminController::class, 'deleteBuku'])->name('admin.deleteBuku');
-    Route::get('/admin/cetakPeminjaman', [AdminController::class, 'cetakDataPeminjaman'])->name('admin.cetakDataPeminjaman');
-    Route::post('/tambahAdmin', [AdminController::class, 'postTambahAdmin'])->name('postTambahAdmin');
-    Route::post('/postEditAdmin/{id}', [AdminController::class, 'postEditAdmin'])->name('postEditAdmin');
+    Route::post('/postTambahBuku', [AdminController::class, 'postTambahBuku'])->name('postTambahBuku');
+    Route::post('/postEditBuku/{id}', [AdminController::class, 'postEditBuku'])->name('postEditBuku');
+    
+    // Berita
+    Route::get('/admin/berita', [adminController::class, 'adminBerita'])->name('admin.berita');
+    Route::get('/admin/tambahBerita', [AdminController::class, 'tambahBerita'])->name('admin.tambahBerita');
+    Route::get('/admin/editBerita/{id}', [AdminController::class, 'editBerita'])->name('admin.editBerita');
+    Route::get('/admin/deleteBerita/{id}', [AdminController::class, 'deleteBerita'])->name('admin.deleteBerita');
+    Route::post('/postTambahBerita', [AdminController::class, 'postTambahBerita'])->name('postTambahBerita');
+    Route::post('/postEditBerita/{id}', [AdminController::class, 'postEditBerita'])->name('postEditBerita');
+    
+    // Aktivitas
+    Route::get('/admin/aktivitas', [adminController::class, 'adminAktivitas'])->name('admin.aktivitas');
+    Route::get('/admin/tambahAktivitas', [AdminController::class, 'tambahAktivitas'])->name('admin.tambahAktivitas');
+    Route::get('/admin/editAktivitas/{id}', [AdminController::class, 'editAktivitas'])->name('admin.editAktivitas');
+    Route::get('/admin/deleteAktivitas/{id}', [AdminController::class, 'deleteAktivitas'])->name('admin.deleteAktivitas');
+    Route::post('/postTambahAktivitas', [AdminController::class, 'postTambahAktivitas'])->name('postTambahAktivitas');
+    Route::post('/postEditAktivitas/{id}', [AdminController::class, 'postEditAktivitas'])->name('postEditAktivitas');
 
-    // Route untuk berpindah ke halaman tambah berita dan tambah profile lulusan
-    Route::get('/admin/berita', [adminController::class, 'beritaAdmin'])->name('admin.berita');
-    Route::get('/admin/lulusan', [adminController::class, 'lulusanAdmin'])->name('admin.lulusan');
+    // Lulusan
+    Route::get('/admin/lulusan', [adminController::class, 'adminLulusan'])->name('admin.lulusan');
+    Route::get('/admin/tambahLulusan', [AdminController::class, 'tambahLulusan'])->name('admin.tambahLulusan');
+    Route::get('/admin/editLulusan/{id}', [AdminController::class, 'editLulusan'])->name('admin.editLulusan');
+    Route::get('/admin/deleteLulusan/{id}', [AdminController::class, 'deleteLulusan'])->name('admin.deleteLulusan');
+    Route::post('/postTambahLulusan', [AdminController::class, 'postTambahLulusan'])->name('postTambahLulusan');
+    Route::post('/postEditLulusan/{id}', [AdminController::class, 'postEditLulusan'])->name('postEditLulusan');
 });
-Route::post('/postTambahBuku', [AdminController::class, 'postTambahBuku'])->name('postTambahBuku');
-Route::post('/postEditBuku/{id}', [AdminController::class, 'postEditBuku'])->name('postEditBuku');
+
 Route::post('/postTambahPeminjaman', [AdminController::class, 'postTambahPeminjaman'])->name('postTambahPeminjaman');
 Route::post('/postEditPeminjaman/{id}', [AdminController::class, 'postEditPeminjaman'])->name('postPeminjamanBuku');
 
 Route::group(['middleware' => ['auth', 'checklevel:user']], function () {
     Route::get('/user/home', [LoginRegisterController::class, 'userHome'])->name('user.home');
-    Route::get('/berita', [LoginRegisterController::class, 'berita'])->name('berita');
+    Route::get('/user/berita', [LoginRegisterController::class, 'berita'])->name('user.berita');
     Route::get('/profile', [LoginRegisterController::class, 'profile'])->name('profile');
     Route::get('/aktivitas', [LoginRegisterController::class, 'aktivitas'])->name('aktivitas');
 });
